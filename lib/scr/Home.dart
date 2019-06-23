@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+import 'Search.dart';
+import 'Stdinfo.dart';
+
 class Home extends StatefulWidget {
   @override
   _HomeState createState() => _HomeState();
@@ -25,9 +28,9 @@ class _HomeState extends State<Home> {
         bottomNavigationBar: BottomNavigationBar(
           items: <BottomNavigationBarItem>[
             BottomNavigationBarItem(
-                icon: Icon(Icons.home), title: Text("HOME")),
+                icon: Icon(Icons.search), title: Text("search")),
             BottomNavigationBarItem(
-                icon: Icon(Icons.search), title: Text("search"))
+                icon: Icon(Icons.account_circle), title: Text("Info"))
           ],
           onTap: caruntpage,currentIndex:u,
         ));
@@ -52,12 +55,12 @@ class _HomeState extends State<Home> {
   Widget customWidget(){
     switch(widgetMarker){
       case WidgetMarker.info:
-        return Container(color: Colors.deepOrange,);
+        return Search();//Container(color: Colors.deepOrange,);
 
       case WidgetMarker.search:
-        return Container(color: Colors.blue,);
+        return Info();//Container(color: Colors.blue,);
 
     }
-    return Container(color: Colors.deepOrange,);
+    return Info();
   }
 }

@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:httpapp/scr/Home.dart';
 import 'package:httpapp/scr/validatorData.dart';
-import 'package:http/http.dart' as http;
+import 'package:http/http.dart'as http;
 
 class Login extends StatefulWidget {
   @override
@@ -11,14 +11,17 @@ class Login extends StatefulWidget {
 }
 
 Post p;
+//const String CREATE_POST_URL =
+  //  "https://executed-returns.000webhostapp.com/login.php";
 const String CREATE_POST_URL =
-    "https://executed-returns.000webhostapp.com/login.php";
-
+    "https://modern-project.000webhostapp.com/login.php";
 class _LoginState extends State<Login> with ValidationData {
   final formkey = GlobalKey<FormState>();
+
   String email;
   String password;
-
+String err ='';
+bool sho=false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,9 +35,7 @@ class _LoginState extends State<Login> with ValidationData {
                 emailFiled(),
                 passWordFiled(),
                 submitButton(),
-                RaisedButton(onPressed: () {
-                  print(p.user_email);
-                })
+Visibility(child: Text(err),visible: sho,)
               ],
             ),
           )),
@@ -73,15 +74,22 @@ class _LoginState extends State<Login> with ValidationData {
             body: {'name': email, 'user_email': password});
         print('Response status: ${response.statusCode}');
         print('Response body: ${response.body}');
-
-        if (response.body == "getuser") {
+        String lo=json.decode(response.body)['message'];
+        if (lo== "login successful") {
 
           Navigator.pushReplacement (
             context,
             MaterialPageRoute(builder: (context) => Home()),
           );
         } else {
-          print('11111111111111111111111111111111111111111111111');
+          print(response.body);
+          setState(() {
+
+            err=json.decode(response.body)['message'];
+            sho=true;
+          });
+
+
         }
       },
       child: Text("Submit"),
@@ -102,21 +110,21 @@ class _LoginState extends State<Login> with ValidationData {
 
 class Post {
   final String user_name;
-  final String user_email;
+  final String password;
 
-  Post({this.user_name, this.user_email});
+  Post({this.user_name, this.password});
 
   factory Post.fromJson(Map<String, dynamic> json) {
     return Post(
       user_name: json['name'],
-      user_email: json['user_email'],
+      password: json['user_email'],
     );
   }
 
   Map toMap() {
     var map = new Map<String, dynamic>();
     map["name"] = user_name;
-    map["user_email"] = user_email;
+    map["user_email"] = password;
 
     return map;
   }
